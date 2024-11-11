@@ -22,33 +22,32 @@ function App() {
   const [boxes, setBoxes] = useState([]);
 
   const genRandomHexColor = () => {
-    let hexColorCode = "#";
-    hexColorCode =
-      hexColorCode + Math.floor(Math.random() * (256 * 256 * 256)).toString(16);
-    return hexColorCode;
+    var letters = "0123456789ABCDEF";
+    var color = "#";
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   };
 
   const handleButtonAdd = (boxCount) => {
+    if (boxCount > 200 || boxCount === undefined) {
+      return;
+    }
     console.log(boxCount);
-
-    // gen array with number of box
-    const newBox = {
-      id: "",
-      text: "",
-      color: "",
-    };
-
     let newBoxInstance = [];
 
     for (let i = 0; i < boxCount; i++) {
-      newBoxInstance.push({
-        ...newBox,
-        id: i + 1,
-        text: `Box #${i + 1}`,
-        color: genRandomHexColor(),
-      });
+      newBoxInstance = [
+        ...newBoxInstance,
+        {
+          id: i,
+          text: `Box #${i + 1}`,
+          color: genRandomHexColor(),
+        },
+      ];
     }
-    console.log(newBoxInstance);
+
     setBoxes(newBoxInstance);
 
     console.log(boxes);
@@ -60,6 +59,8 @@ function App() {
       <div>
         <label htmlFor="boxCount">Number of boxes</label>
         <input
+          type="number"
+          pattern="1-154"
           name="boxCount"
           value={boxCount}
           default={0}
